@@ -10,16 +10,14 @@ Pod::Spec.new do |s|
 
   s.homepage         = 'https://www.codelyticalhub.com'
   s.license          = { :type => 'Commercial', :text => 'Copyright CodeLytical. All rights reserved.' }
-  s.author           = { 'CodeLytical' => 'dev@codelyticalhub.com' }
+  s.author           = { 'CodeLytical' => 'codelyticalhub@gmail.com' }
   s.platform         = :ios, '15.0'
   s.swift_version    = '5.9'
 
   s.source = {
-    :git => 'https://github.com/CodeLytialHub/liveness-ios.git',
-    :tag => s.version.to_s
+    :http => 'https://github.com/CodeLytialHub/liveness-ios/releases/download/1.0.0/CodelyticalLivenessSDK.xcframework.zip'
   }
 
   s.vendored_frameworks = 'CodelyticalLivenessSDK.xcframework'
-
   s.frameworks = 'AVFoundation', 'UIKit', 'CoreImage', 'CoreMedia', 'CoreVideo'
 end
