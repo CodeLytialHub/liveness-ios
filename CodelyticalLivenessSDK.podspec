@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'CodelyticalLivenessSDK'
-  s.version          = '1.0.1'
+  s.version          = '1.0.2'
   s.summary          = 'Face liveness / anti-spoofing SDK for iOS (SwiftUI).'
   s.description      = <<-DESC
     CodelyticalLivenessSDK provides a drop-in SwiftUI face liveness screen
@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.swift_version    = '5.9'
 
   s.source = {
-    :http => 'https://github.com/CodeLytialHub/liveness-ios/releases/download/1.0.0/CodelyticalLivenessSDK.xcframework.zip'
+    :http => 'https://github.com/CodeLytialHub/liveness-ios/releases/download/1.0.2/CodelyticalLivenessSDK.xcframework.zip'
   }
 
   s.vendored_frameworks = 'CodelyticalLivenessSDK.xcframework'

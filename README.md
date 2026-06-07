@@ -12,8 +12,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/iOS-15.0%2B-blue?style=flat-square" />
   <img src="https://img.shields.io/badge/Swift-5.9-orange?style=flat-square" />
-  <img src="https://img.shields.io/badge/CocoaPods-1.0.0-red?style=flat-square" />
-  <img src="https://img.shields.io/badge/SPM-1.0.0-green?style=flat-square" />
+  <img src="https://img.shields.io/badge/CocoaPods-1.0.2-red?style=flat-square" />
   <img src="https://img.shields.io/badge/License-Commercial-lightgrey?style=flat-square" />
 </p>
 
@@ -26,7 +25,9 @@ CodelyticalLivenessSDK gives your iOS app a fully automatic face liveness screen
 - No capture button — fully automatic
 - On-device detection — face data never leaves the phone until capture
 - SwiftUI-native — one line to present
-- Works with CocoaPods and Swift Package Manager
+- Works with CocoaPods
+
+> **Note:** Swift Package Manager (SPM) is not supported for this SDK because it depends on `TensorFlowLiteObjC` which Google has not released on SPM.
 
 ---
 
@@ -57,7 +58,7 @@ Keep your key private. Do not commit it to a public repository.
 Add this to your `Podfile`:
 
 ```ruby
-pod 'CodelyticalLivenessSDK', '~> 1.0.0'
+pod 'CodelyticalLivenessSDK', '~> 1.0.2'
 ```
 
 Then run:
@@ -67,20 +68,6 @@ pod install
 ```
 
 Open your project using the `.xcworkspace` file from now on.
-
----
-
-### Swift Package Manager
-
-In Xcode:
-
-1. Go to **File → Add Package Dependencies**
-2. Paste this URL:
-```
-https://github.com/CodeLytialHub/liveness-ios
-```
-3. Select **Up to Next Major Version** → `1.0.0`
-4. Click **Add Package**
 
 ---
 
@@ -155,16 +142,6 @@ Present it as a full-screen cover (recommended):
 }
 ```
 
-Or as a sheet:
-
-```swift
-.sheet(isPresented: $showLiveness) {
-    LivenessSdk.livenessView { result in
-        // handle result
-    }
-}
-```
-
 ---
 
 ## Full Example
@@ -202,7 +179,6 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
 
-                // Show the captured selfie after a successful check
                 if let img = capturedImage {
                     Image(uiImage: img)
                         .resizable()
@@ -270,73 +246,14 @@ struct ContentView: View {
 
 ---
 
-## Using the Captured Image
-
-Once you receive a `.real(image, score)` result, use these helpers to send the image to your backend:
-
-```swift
-case .real(let image, let score):
-
-    // Option A — multipart file upload
-    if let fileURL = LivenessSdk.imageToFile(image) {
-        // upload fileURL using URLSession multipart form
-    }
-
-    // Option B — JSON body (base64)
-    if let base64 = LivenessSdk.imageToBase64(image) {
-        // include base64 string in your JSON request body
-    }
-
-    // Option C — raw Data
-    if let data = LivenessSdk.imageToData(image) {
-        // use data however you need
-    }
-```
-
-All three helpers accept an optional `quality` parameter (0.0–1.0, default 1.0) for JPEG compression:
-
-```swift
-let base64 = LivenessSdk.imageToBase64(image, quality: 0.85)
-```
-
----
-
-## Configuration (Optional)
-
-You can tune detection behaviour by passing a `LivenessConfig`:
-
-```swift
-LivenessSdk.livenessView(
-    config: LivenessConfig(
-        captureDelay: 3.0,       // seconds a real face must be held before capture
-        popFakeDelay: 2.0,       // seconds before a spoof is reported
-        fasThreshold: 0.2,       // anti-spoofing score threshold (lower = stricter)
-        laplacianThreshold: 500  // blur rejection threshold (higher = stricter)
-    )
-) { result in
-    // handle result
-}
-```
-
-| Parameter | Default | Description |
-|---|---|---|
-| `captureDelay` | `3.0` | Seconds to hold still once a real face is confirmed |
-| `popFakeDelay` | `2.0` | Seconds before a spoof result is fired |
-| `fasThreshold` | `0.2` | Faces scoring at or below this are considered real |
-| `laplacianThreshold` | `500` | Frames below this sharpness score are skipped |
-
-If you do not pass a config the defaults above are used automatically.
-
----
-
 ## Result Reference
 
-| Case | When it fires |
-|---|---|
-| `.real(image, score)` | A genuine live face was confirmed and captured |
-| `.spoof` | A spoof was detected, or no face appeared within 10 seconds |
-| `.cancelled` | The user tapped the ✕ close button |
-| `.error(String)` | Camera unavailable, model load failure, or capture error |
+| Case                  | When it fires                                               |
+| --------------------- | ----------------------------------------------------------- |
+| `.real(image, score)` | A genuine live face was confirmed and captured              |
+| `.spoof`              | A spoof was detected, or no face appeared within 10 seconds |
+| `.cancelled`          | The user tapped the ✕ close button                          |
+| `.error(String)`      | Camera unavailable, model load failure, or capture error    |
 
 ---
 
