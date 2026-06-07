@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'CodelyticalLivenessSDK'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Face liveness / anti-spoofing SDK for iOS (SwiftUI).'
   s.description      = <<-DESC
     CodelyticalLivenessSDK provides a drop-in SwiftUI face liveness screen
@@ -20,4 +20,5 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = 'CodelyticalLivenessSDK.xcframework'
   s.frameworks = 'AVFoundation', 'UIKit', 'CoreImage', 'CoreMedia', 'CoreVideo'
+  s.dependency 'TensorFlowLiteObjC'
 end
